@@ -1,7 +1,7 @@
 const router = require("express").Router()
 
-const userRoutes = require("./user.controller");
-const thoughtRoutes = require("./thought.controller");
+const userRoutes = require("./userController");
+const thoughtRoutes = require("./thoughtController");
 
 router.use("/api/user", userRoutes);
 router.use("/api/thought", thoughtRoutes);

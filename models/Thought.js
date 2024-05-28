@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
 
 // Schema to create a course model
@@ -19,7 +20,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions: [reactionSchema],
+    reactions: [{type: mongoose.Schema.Types.ObjectId, ref: "Reaction"}], //[reactionSchema],
   },
   {
 //To Do: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.

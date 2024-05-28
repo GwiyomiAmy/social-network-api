@@ -1,5 +1,6 @@
+const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
+//const thoughtSchema = require('./Thought');
 
 // Schema to create Student model
 const userSchema = new Schema(
@@ -16,7 +17,7 @@ const userSchema = new Schema(
       unique: true,
 //To Do: must match a valid email address (Mongoose matching validation)
     },
-    thoughts: [{type: mongoose.Shcema.Types.ObjectId, ref: "Thought"}], //[thoughtSchema],
+    thoughts: [{type: mongoose.Schema.Types.ObjectId, ref: "Thought"}], //[thoughtSchema],
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}], //[userSchema],
   },
   {
