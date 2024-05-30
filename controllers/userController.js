@@ -5,25 +5,19 @@ module.exports = {
   // Get all users
   async getUsers(req, res) {
     try {
-      const users = await User.find();
-
-      const userObj = {
-        users,
-        headCount: await headCount(),
-      };
-
-      res.json(userObj);
+      const user = await User.find();
+      res.json(user);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json(err);
+      res.status(500).json(err);
     }
   },
 
  // Get a single user
 async getSingleUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.params.userId })
-      .populate('users');
+    const user = await User.findById({ _id: req.params.userId })
+      .populate('friends').populate('thoughts');
+      console.log(user)
 
     if (!user) {
       return res.status(404).json({ message: 'No user with that ID' });
@@ -32,6 +26,7 @@ async getSingleUser(req, res) {
     res.json(user);
   } catch (err) {
     res.status(500).json(err);
+    console.error(err)
   }
 },
 
@@ -48,7 +43,7 @@ async getSingleUser(req, res) {
   // Update a user
   async updateUser(req, res) {
     try {
-      const user = await User.findOneAndUpdate(
+      const user = await User.findByIdAndUpdate(
         { _id: req.params.userId },
         { $set: req.body },
         { runValidators: true, new: true }
@@ -67,13 +62,13 @@ async getSingleUser(req, res) {
   // Delete a user and remove them from the thought
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndRemove({ _id: req.params.userId });
+      const user = await User.findByIdAndDelete({ _id: req.params.userId });
 
       if (!user) {
         return res.status(404).json({ message: 'No such user exists' });
       }
 
-      const thought = await Thought.findOneAndUpdate(
+      const thought = await Thought.findByIdAndUpdate(
         { users: req.params.userId },
         { $pull: { users: req.params.userId } },
         { new: true }
@@ -98,9 +93,9 @@ async getSingleUser(req, res) {
     console.log(req.body);
 
     try {
-      const user = await User.findOneAndUpdate(
+      const user = await User.findByIdAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.body } },
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 
@@ -118,9 +113,9 @@ async getSingleUser(req, res) {
   // Remove friend from a user
   async removeFriend(req, res) {
     try {
-      const user = await User.findOneAndUpdate(
+      const user = await User.findByIdAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction');
 
 // Schema to create a course model
 const thoughtSchema = new Schema(
@@ -10,17 +11,14 @@ const thoughtSchema = new Schema(
       maxlength: 280,
       minlength: 1,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-//To Do: Use a getter method to format the timestamp on query
-    },
     username: { 
-//To Do: user that created this thought
       type: String,
       required: true,
     },
-    reactions: [{type: mongoose.Schema.Types.ObjectId, ref: "Reaction"}], //[reactionSchema],
+    reactions: [reactionSchema],
+  },
+  {
+    timestamp: true
   },
   {
 //To Do: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.

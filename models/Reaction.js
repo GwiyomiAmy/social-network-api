@@ -11,8 +11,7 @@ const reactionSchema = new Schema(
       type: String,
       required: true,
       maxlength: 50,
-      minlength: 4,
-      default: 'Unnamed assignment',
+      minlength: 2,
     },
     username: { 
       type: String,
@@ -21,8 +20,10 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-//To Do: Use a getter method to format the timestamp on query
     },
+  },
+  {
+    timestamp: true
   },
   {
     toJSON: {

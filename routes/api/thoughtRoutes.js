@@ -12,8 +12,6 @@ const {
 // /api/thoughts
 router.route('/').get(getThoughts).post(createThought);
 
-//To Do: POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
-
 // /api/thoughts/:thoughtId
 router
   .route('/:thoughtId')
@@ -24,7 +22,11 @@ router
 // /api/thoughts/:thoughtId/reactions
 router
   .route('/:thoughtId/reactions')
-  .post(createReaction)
+  .post(createReaction);
+
+  // /api/thoughts/:thoughtId/reactions/:reactionId
+router
+  .route('/:thoughtId/reactions/:reactionId')
   .delete(deleteReaction);
 
 module.exports = router;
